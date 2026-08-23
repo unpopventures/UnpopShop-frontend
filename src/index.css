@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink font-body antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-forest-700;
+  }
+  :focus-visible {
+    outline: 2px solid #C0923D;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-forest-500 text-cream-50 hover:bg-forest-600;
+  }
+  .btn-gold {
+    @apply btn bg-gold-500 text-white hover:bg-gold-600;
+  }
+  .btn-outline {
+    @apply btn border border-forest-300 text-forest-600 hover:bg-forest-50;
+  }
+  .btn-ghost {
+    @apply btn text-forest-600 hover:bg-forest-50;
+  }
+  .card {
+    @apply rounded-2xl border border-forest-100 bg-white shadow-card;
+  }
+  .input {
+    @apply w-full rounded-lg border border-forest-200 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-forest-300 focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-forest-400;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-gold-600;
+  }
+}
+
+.bg-hero-pattern {
+  background-image: radial-gradient(circle at 15% 20%, rgba(192, 146, 61, 0.10), transparent 40%),
+    radial-gradient(circle at 85% 0%, rgba(31, 111, 120, 0.10), transparent 45%);
+}
