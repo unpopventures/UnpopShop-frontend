@@ -42,6 +42,11 @@ export default function MyProducts() {
       setLimit({ listingLimit: p.data.listingLimit, listingsUsed: p.data.listingsUsed });
       setBrands(b.data.brands);
       setCategories(c.data.categories);
+    }).catch((err) => {
+      toast.error(apiErrorMessage(err));
+      setProducts([]);
+      setBrands([]);
+      setCategories([]);
     }).finally(() => setLoading(false));
   }
 
@@ -131,18 +136,24 @@ export default function MyProducts() {
 
   async function remove(id: string) {
     if (!confirm("Delete this product listing?")) return;
-    await api.deleteProduct(id);
-    loadAll();
+    try {
+      await api.deleteProduct(id);
+      toast.success("Product deleted.");
+      loadAll();
+    } catch (err) {
+      toast.error(apiErrorMessage(err));
+    }
   }
 
-  const atLimit = limit.listingsUsed >= limit.listingLimit;
+  const publishedListings = products.filter((product) => product.status !== "DRAFT").length;
+  const atLimit = limit.listingLimit > 0 && publishedListings >= limit.listingLimit;
 
   return (
     <DashboardShell navItems={manufacturerNav} sectionLabel="Brand Dashboard" greeting="My Products" subtitle="Manage your product listings.">
       <Card className="mb-6 flex flex-col items-start justify-between gap-3 p-5 sm:flex-row sm:items-center">
         <div className="w-full sm:max-w-xs">
           <p className="text-sm font-semibold text-forest-700">
-            {limit.listingsUsed} / {limit.listingLimit} active listings used
+            {publishedListings} / {limit.listingLimit} published listings used
           </p>
           <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-cream-200">
             <div className={`h-full rounded-full ${atLimit ? "bg-red-400" : "bg-forest-500"}`} style={{ width: `${Math.min(100, (limit.listingsUsed / Math.max(1, limit.listingLimit)) * 100)}%` }} />
@@ -151,9 +162,11 @@ export default function MyProducts() {
         </div>
         <button
           onClick={() => { setForm(initialForm); setShowForm((s) => !s); }}
-          className="btn-gold shrink-0"
+          disabled={atLimit && !showForm}
+          title={atLimit ? "Your plan listing limit has been reached." : "Add a product listing"}
+          className="btn-gold shrink-0 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <Plus size={15} /> Add Product
+          <Plus size={15} /> {atLimit ? "Listing limit reached" : "Add Product"}
         </button>
       </Card>
 
