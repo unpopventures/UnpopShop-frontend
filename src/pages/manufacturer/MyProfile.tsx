@@ -8,6 +8,7 @@ import { api, apiErrorMessage } from "../../api/client";
 const initial = {
   companyName: "",
   description: "",
+  logoUrl: "",
   state: "",
   city: "",
   gstNumber: "",
@@ -30,6 +31,7 @@ export default function MyProfile() {
         setForm({
           companyName: p.companyName || "",
           description: p.description || "",
+          logoUrl: p.logoUrl || "",
           state: p.state || "",
           city: p.city || "",
           gstNumber: p.gstNumber || "",
@@ -39,6 +41,7 @@ export default function MyProfile() {
         });
         setStatus(p.verificationStatus);
       })
+      .catch((err) => toast.error(apiErrorMessage(err)))
       .finally(() => setLoading(false));
   }, []);
 
@@ -78,6 +81,11 @@ export default function MyProfile() {
           <div className="sm:col-span-2">
             <label className="label">Company name</label>
             <input className="input" value={form.companyName} onChange={(e) => update("companyName", e.target.value)} />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="label">Company logo URL</label>
+            <input type="url" className="input" value={form.logoUrl} onChange={(e) => update("logoUrl", e.target.value)} placeholder="https://example.com/company-logo.png" />
+            <p className="mt-1 text-xs text-forest-400">Add a publicly accessible image URL. File upload is not available in this profile form.</p>
           </div>
           <div className="sm:col-span-2">
             <label className="label">Company description</label>
