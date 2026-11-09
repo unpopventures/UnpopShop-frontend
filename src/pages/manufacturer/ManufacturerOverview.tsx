@@ -35,6 +35,46 @@ export default function ManufacturerOverview() {
             <StatCard icon={<MessageCircle size={18} />} label="Pending Inquiries" value={data.stats.pendingInquiries} />
           </div>
 
+
+          <Card className="mb-5 p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="eyebrow mb-1">Manufacturer onboarding</p>
+                <h3 className="font-display text-lg text-forest-700">Build a buyer-ready supply profile</h3>
+                <p className="mt-1 max-w-2xl text-sm leading-6 text-forest-400">
+                  Complete your company information and add structured product listings so the Unpop team and prospective
+                  buyers can better understand your manufacturing capabilities.
+                </p>
+              </div>
+              <Badge tone={data.profileCompleteness >= 80 ? "success" : "warning"}>
+                {data.profileCompleteness}% profile complete
+              </Badge>
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <Link to="/manufacturer/profile" className="flex items-center justify-between rounded-xl border border-forest-100 p-4 transition hover:bg-cream-50">
+                <div>
+                  <p className="text-sm font-semibold text-forest-700">1. Company profile</p>
+                  <p className="mt-1 text-xs text-forest-400">Company description, location, capacity and business details</p>
+                </div>
+                <ArrowRight size={16} className="shrink-0 text-gold-600" />
+              </Link>
+              <Link to="/manufacturer/products" className="flex items-center justify-between rounded-xl border border-forest-100 p-4 transition hover:bg-cream-50">
+                <div>
+                  <p className="text-sm font-semibold text-forest-700">2. Product catalogue</p>
+                  <p className="mt-1 text-xs text-forest-400">Categories, MOQ, packaging, pricing and product specifications</p>
+                </div>
+                <ArrowRight size={16} className="shrink-0 text-gold-600" />
+              </Link>
+            </div>
+            {data.verificationStatus !== "VERIFIED" && (
+              <p className="mt-4 rounded-lg bg-cream-100 px-4 py-3 text-xs leading-5 text-forest-500">
+                Your account is currently {String(data.verificationStatus).toLowerCase()}. Unpop review is a separate step;
+                completing your profile does not automatically verify your business. Keep relevant business and product
+                documents ready for the review process.
+              </p>
+            )}
+          </Card>
+
           <div className="grid gap-5 lg:grid-cols-3">
             <Card className="p-5">
               <h3 className="mb-3 font-display text-base text-forest-700">Top Performing Products</h3>
