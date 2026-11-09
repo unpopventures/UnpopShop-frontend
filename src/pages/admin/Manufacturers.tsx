@@ -11,6 +11,7 @@ export default function Manufacturers() {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   function load() {
     setLoading(true);
@@ -44,6 +45,7 @@ export default function Manufacturers() {
     { header: "Plan", render: (m) => m.subscriptionPlan?.name || "—" },
     { header: "Products", render: (m) => m._count?.products ?? 0 },
     { header: "Status", render: (m) => <Badge tone={tone[m.verificationStatus]}>{m.verificationStatus}</Badge> },
+    { header: "Profile", render: (m) => <button onClick={() => setSelectedId(selectedId === m.id ? null : m.id)} className="btn-outline !py-1 !px-3 text-xs">{selectedId === m.id ? "Close" : "View details"}</button> },
     {
       header: "Action",
       render: (m) => (
@@ -73,6 +75,43 @@ export default function Manufacturers() {
         </select>
       </Card>
       <AdminTable columns={cols} rows={filtered} loading={loading} emptyTitle="No matching manufacturers" />
+
+      {selectedId && (() => {
+        const m = manufacturers.find((item) => item.id === selectedId);
+        if (!m) return null;
+        const facts = [
+          ["Company", m.companyName], ["Contact person", m.user?.name],
+          ["Email", m.user?.email], ["Phone", m.user?.phone],
+          ["Location", [m.city, m.state, m.country].filter(Boolean).join(", ")],
+          ["GST number", m.gstNumber], ["Production capacity", m.productionCapacity],
+          ["Certifications declared", m.certifications], ["Export markets declared", m.exportMarkets],
+          ["Subscription", m.subscriptionPlan?.name], ["Brands", m._count?.brands], ["Products", m._count?.products],
+        ];
+        return (
+          <Card className="mt-4 p-5">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <div><h3 className="font-display text-lg text-forest-700">{m.companyName}</h3><p className="text-xs text-forest-400">Manufacturer profile review</p></div>
+              <Badge tone={tone[m.verificationStatus]}>{m.verificationStatus}</Badge>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {facts.map(([label, value]) => (
+                <div key={label}>
+                  <p className="text-xs text-forest-400">{label}</p>
+                  <p className="mt-1 break-words text-sm text-forest-700">{value === 0 ? "0" : value || "Not provided"}</p>
+                </div>
+              ))}
+              <div className="sm:col-span-2 lg:col-span-3">
+                <p className="text-xs text-forest-400">Company description</p>
+                <p className="mt-1 whitespace-pre-wrap text-sm text-forest-700">{m.description || "Not provided"}</p>
+              </div>
+            </div>
+            <p className="mt-5 rounded-lg bg-cream-100 p-3 text-xs leading-5 text-forest-500">
+              Certifications and export markets shown here are manufacturer-declared profile information. This view does not contain uploaded evidence or independently validate claims. Confirm supporting documents separately before approving verification.
+            </p>
+          </Card>
+        );
+      })()}
+
     </DashboardShell>
   );
 }
