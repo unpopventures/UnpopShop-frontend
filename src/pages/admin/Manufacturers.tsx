@@ -106,7 +106,7 @@ export default function Manufacturers() {
               </div>
             </div>
             <p className="mt-5 rounded-lg bg-cream-100 p-3 text-xs leading-5 text-forest-500">
-              Certifications and export markets shown here are manufacturer-declared profile information. This view does not contain uploaded evidence or independently validate claims. Confirm supporting documents separately before approving verification.
+              Certifications and export markets shown here are manufacturer-declared profile information. Request supporting documents by email, review them outside the platform, and update the verification status only after the team completes its checks.
             </p>
           </Card>
         );
