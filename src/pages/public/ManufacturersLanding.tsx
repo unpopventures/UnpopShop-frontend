@@ -6,7 +6,7 @@ import Footer from "../../components/layout/Footer";
 const steps = [
   { icon: <ClipboardCheck size={20} />, title: "Create your manufacturer profile", body: "Share your company details, location, capabilities and the products you make." },
   { icon: <PackageSearch size={20} />, title: "Build your product catalogue", body: "Add specifications, minimum order quantities, capacity, packaging and indicative wholesale pricing." },
-  { icon: <ShieldCheck size={20} />, title: "Submit documents for review", body: "Provide relevant business and product documents. Unpop can review the information before it is presented to buyers." },
+  { icon: <ShieldCheck size={20} />, title: "Complete verification by email", body: "The Unpop team will email you if supporting documents are required. Reply to that email with the requested documents for manual review." },
   { icon: <Globe2 size={20} />, title: "Get discovered by bulk buyers", body: "Make your supply capabilities easier for domestic and international buyers to find and enquire about." },
 ];
 
@@ -15,7 +15,7 @@ const profileItems = [
   "Product categories and specifications",
   "Minimum order quantities and production capacity",
   "Packaging options and lead times",
-  "Certifications and supporting documents",
+  "Relevant certifications and registrations (as applicable)",
   "Export experience and destination markets, where applicable",
 ];
 
@@ -115,7 +115,7 @@ export default function ManufacturersLanding() {
                   "Company and contact information",
                   "Product list, descriptions and clear photographs",
                   "MOQ, production capacity and lead times",
-                  "Relevant registrations and certifications",
+                  "Relevant registrations and certifications, if applicable (the Unpop team will request supporting documents by email)",
                   "Packaging details and current markets served",
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
