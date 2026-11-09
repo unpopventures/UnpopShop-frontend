@@ -69,7 +69,7 @@ export default function ManufacturerOverview() {
             {data.verificationStatus !== "VERIFIED" && (
               <p className="mt-4 rounded-lg bg-cream-100 px-4 py-3 text-xs leading-5 text-forest-500">
                 Your account is currently {String(data.verificationStatus).toLowerCase()}. Unpop review is a separate step;
-                completing your profile does not automatically verify your business. Keep relevant business and product
+                completing your profile does not automatically verify your business. Our team will contact you by email with the documents required for verification and instructions for submitting them. No document upload is needed on this dashboard. Keep relevant business and product
                 documents ready for the review process.
               </p>
             )}
