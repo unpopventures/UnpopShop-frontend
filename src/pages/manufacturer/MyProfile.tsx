@@ -68,6 +68,12 @@ export default function MyProfile() {
           <p className="text-sm text-forest-400">Verification status</p>
           <Badge tone={status === "VERIFIED" ? "success" : status === "REJECTED" ? "danger" : "warning"}>{status}</Badge>
         </div>
+        <div className="mb-5 rounded-xl bg-cream-100 p-4">
+          <p className="text-sm font-semibold text-forest-700">How verification works</p>
+          <p className="mt-1 text-sm leading-6 text-forest-500">
+            Unpop verifies manufacturer documents manually by email. After reviewing your profile, our team will contact you with the required document list and submission instructions. You do not need to upload documents here.
+          </p>
+        </div>
         <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <label className="label">Company name</label>
