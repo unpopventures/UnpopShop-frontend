@@ -1,93 +1,100 @@
-# Unpop 2.0 implementation backlog
+# Unpop 2.0 — B2B-first implementation backlog
 
-## Product decisions
-- Markets: India and international, with market-by-market launch controls.
-- Fulfilment: hybrid manufacturer-direct and Unpop-managed warehouse.
-- Currency: multi-currency, with market-specific price lists and checkout eligibility.
-- Customer relationship: Unpop owns order management, payments coordination and customer service.
-- Preserve the existing B2B RFQ, buyer, manufacturer and admin workflows.
+## Business priorities (authoritative)
+1. Build a high-quality, searchable database of Indian manufacturers and their products.
+2. Build a dashboard for domestic and international bulk buyers to discover suppliers and manage sourcing.
+3. Enable bulk orders first, then progressively enable international order execution.
+
+Consumer B2C commerce is a later expansion channel. It must not displace or delay these three priorities.
+
+## Confirmed operating decisions
+- Geography: India and international markets.
+- Fulfilment: hybrid — manufacturer-direct and Unpop-managed warehouse, selected per product/order.
+- Currency: multi-currency, with market-specific price lists and payment/settlement eligibility.
+- Unpop coordinates the buyer relationship, enquiries/orders and customer support.
+- Preserve existing B2B RFQ, quotation, manufacturer, buyer and admin capabilities.
 
 ## Delivery sequence
 
 ### Phase 0 — Safety and baseline
-- [ ] Preserve current main branch and establish a separate working branch.
+- [ ] Keep production `main` untouched; work on feature branches and use staging.
 - [ ] Run frontend and backend builds; record baseline failures.
-- [ ] Audit deployment environments, database, storage, email, payment and shipping integrations without exposing secrets.
-- [ ] Confirm staging deployment and database backup/restore process.
+- [ ] Audit deployment, database, storage, email, payment and shipping integrations without exposing secrets.
+- [ ] Confirm staging and database backup/restore process.
 
-### Phase 1 — Frontend foundation
-- [x] Establish design tokens and global styling.
+### Phase 1 — Frontend foundation (current)
+- [x] Establish global design tokens and styling.
 - [x] Improve responsive public navigation and accessible mobile menu.
-- [ ] Standardize public page shell, footer, spacing and typography.
-- [ ] Add reusable storefront buttons, badges, cards, form fields, empty/loading/error states.
-- [ ] Add market/currency display component (display only until pricing and checkout APIs exist).
-- [ ] Validate existing buyer, manufacturer and admin navigation remains intact.
+- [ ] Standardize shared public page shell, footer, typography and responsive spacing.
+- [ ] Add reusable forms, cards, tables, badges, status indicators, loading, empty and error states.
+- [ ] Define distinct navigation paths for manufacturers, bulk buyers and Unpop administrators.
+- [ ] Validate existing buyer, manufacturer and admin routes remain accessible.
+- [ ] Do not build a B2C-first homepage at this stage.
 
-### Phase 2 — Storefront
-- [ ] Rework homepage around consumer discovery and authentic Indian homegrown brands.
-- [ ] Add shop landing, category landing and brand discovery.
-- [ ] Add search, filters, sorting and pagination.
-- [ ] Keep B2B sourcing/wholesale entry points visible without dominating consumer journeys.
-- [ ] Remove unverified country-demand claims and correct misleading dashboard metrics.
+### Phase 2 — Manufacturer acquisition and database (priority 1)
+- [ ] Manufacturer onboarding landing page and clear value proposition.
+- [ ] Guided manufacturer registration and profile completion.
+- [ ] Structured company profile: legal/trading name, location, contacts, factory/production capability and business type.
+- [ ] Structured product catalogue: categories, descriptions, specifications, pack sizes, MOQ, capacity, lead time and indicative wholesale pricing.
+- [ ] Manufacturer document collection and verification workflow; distinguish submitted, reviewed, verified, expired and rejected.
+- [ ] Product evidence: images, certifications, test reports, licences and market-specific compliance documents where applicable.
+- [ ] Admin review queue, duplicate detection, approval/rejection reasons and audit trail.
+- [ ] Searchable supply directory with filters for category, geography, MOQ, capacity, certifications and export experience.
+- [ ] Manufacturer consent, privacy notice, data access and profile visibility controls.
+- [ ] Data-quality dashboard: profiles started/completed, products published, verification status and missing critical fields.
 
-### Phase 3 — Product catalogue
-- [ ] Product detail layout with structured gallery and product information.
-- [ ] Variants, pack sizes, SKU and availability.
-- [ ] Market-specific retail and wholesale price lists.
-- [ ] Product content fields for ingredients/materials, origin, shelf life, storage and compliance where relevant.
-- [ ] Product and market publication controls.
+### Phase 3 — Bulk buyer dashboard (priority 2)
+- [ ] Buyer onboarding: buyer type, company, country, intended markets and sourcing interests.
+- [ ] Buyer dashboard with saved searches, shortlisted manufacturers, products and active RFQs.
+- [ ] Search and compare manufacturer/product profiles with clear evidence and verification status.
+- [ ] RFQ creation with product/specification, quantity, target price, destination, packaging and delivery requirements.
+- [ ] RFQ status, clarification messages, quotation comparison and negotiation history.
+- [ ] Buyer document and communication centre.
+- [ ] Admin/Unpop workspace to qualify buyer requests and manage matching.
 
-### Phase 4 — Shopping and customer identity
-- [ ] Consumer account/profile and address book.
-- [ ] Persistent cart and multi-manufacturer cart support.
-- [ ] Market-aware checkout eligibility, shipping quote and currency selection.
-- [ ] Tax, duties, shipping and landed-cost disclosures before payment.
+### Phase 4 — Bulk order enablement (priority 3A)
+- [ ] Convert accepted quotations into purchase orders with commercial terms snapshot.
+- [ ] Order confirmation, pro forma invoice and payment milestones.
+- [ ] Manufacturer acceptance, production readiness and dispatch milestones.
+- [ ] Split orders by manufacturer while retaining one buyer-facing sourcing/order record.
+- [ ] Hybrid fulfilment routing: manufacturer-direct or Unpop warehouse.
+- [ ] Shipment documents, tracking, delivery confirmation, discrepancy and claims workflow.
+- [ ] Returns/cancellations and refund/credit workflows as contractually applicable.
+- [ ] Admin order operations dashboard and full audit trail.
 
-### Phase 5 — Payments and finance
-- [ ] Select payment providers based on Unpop entity, geography and eligibility.
-- [ ] Payment intents, webhook verification, idempotency and reconciliation.
-- [ ] Refunds, cancellations, partial refunds and payment failure recovery.
-- [ ] Finance ledger and manufacturer settlement rules.
-- [ ] Confirm seller-of-record, GST, e-commerce operator, TCS and cross-border tax treatment with qualified advisers.
+### Phase 5 — International trade enablement (priority 3B)
+- [ ] Destination-market readiness matrix by product/category.
+- [ ] Capture HS code, country of origin, ingredients/materials, shelf life, packaging and required compliance evidence where relevant.
+- [ ] Incoterms, shipment mode, port/airport, freight quote and insurance fields.
+- [ ] Export documentation checklist and document versioning.
+- [ ] Multi-currency quote and price-list support; store currency and FX basis with each quotation/order.
+- [ ] International payment provider and compliant settlement design based on Unpop entity and provider eligibility.
+- [ ] Duties, taxes, customs, shipping and landed-cost disclosure.
+- [ ] Market activation controls; do not accept orders to a destination until operational, legal and compliance checks pass.
 
-### Phase 6 — Orders and customer service
-- [ ] Customer order history and order detail.
-- [ ] Order status timeline and notifications.
-- [ ] Support, cancellation, return and refund workflows.
-- [ ] Immutable order-item snapshots for product, SKU, quantity, price, currency and seller/fulfiller.
+### Phase 6 — Consumer B2C expansion (later)
+- [ ] Consumer storefront, retail product pages, cart and checkout.
+- [ ] Consumer payments, customer orders, delivery tracking and support.
+- [ ] Reuse the same approved catalogue and inventory foundation with retail visibility/pricing controls.
+- [ ] Keep B2C rollout independent of core B2B delivery milestones.
 
-### Phase 7 — Hybrid fulfilment
-- [ ] Fulfilment location and routing rules per SKU/market.
-- [ ] Split one customer order into fulfilment tasks by manufacturer or warehouse.
-- [ ] Manufacturer acceptance, packing, dispatch and tracking updates.
-- [ ] Warehouse receiving, stock, pick/pack and dispatch workflows.
-- [ ] Partial shipment, backorder, failed delivery and return handling.
+### Phase 7 — Admin, analytics and scale
+- [ ] Admin control centre for manufacturers, buyers, catalogue, verification, RFQs, orders and fulfilment.
+- [ ] KPIs: manufacturer acquisition funnel, verified supply, catalogue completeness, buyer activation, RFQ conversion, quote turnaround, order conversion and repeat buyers.
+- [ ] Market/currency configuration and role-based access.
+- [ ] Security, performance, accessibility, monitoring and staged rollout.
 
-### Phase 8 — B2B continuity and improvements
-- [ ] Preserve RFQ, quotation, negotiation and buyer/manufacturer workflows.
-- [ ] Clarify shared product catalogue with retail and wholesale visibility controls.
-- [ ] Improve manufacturer onboarding and document/compliance records.
-- [ ] Market and demand intelligence only from traceable, supportable data.
+## Core data model direction
+Retain and extend existing User, ManufacturerProfile, BuyerProfile, Category, Brand, Product, RFQ and quotation entities. Add or formalize manufacturer documents/verification events, product specifications and evidence, buyer sourcing preferences, shortlist/saved search, RFQ messages, purchase orders, order line snapshots, payment records, shipment records and fulfilment tasks.
 
-### Phase 9 — Admin and operations
-- [ ] Product, brand, category and market administration.
-- [ ] Currency, price-list and exchange-rate policy controls.
-- [ ] Order, payment, refund and fulfilment dashboard.
-- [ ] Manufacturer settlement and reconciliation views.
-- [ ] Role-based permissions and audit trail.
+A purchase order must preserve the agreed product/specification, quantity, unit price, currency, Incoterm, delivery terms, manufacturer and document references as they existed at confirmation. Never reconstruct historic commercial terms from the current editable catalogue.
 
-### Phase 10 — Launch readiness
-- [ ] Unit, integration and end-to-end tests.
-- [ ] Security review: auth, authorization, input validation, rate limits, CORS and webhook verification.
-- [ ] Accessibility, responsive and performance checks.
-- [ ] Legal, tax, consumer policy, shipping and market readiness review.
-- [ ] Staged rollout with monitoring and rollback plan.
-
-## Architecture guardrails
-- Keep the current React + TypeScript + Vite and Express + Prisma + PostgreSQL stack unless measured constraints justify a change.
-- Extend the existing modular monolith; do not introduce microservices prematurely.
-- Preserve B2B RFQ models and routes.
-- Keep a single customer-facing order while splitting internal fulfilment tasks.
-- Snapshot commercial terms on each order item; never rely on mutable current catalogue prices for historical orders.
-- Treat currency conversion as a display/quoting concern until a market-specific payable price and payment provider are configured.
-- Never claim a market, certification, delivery promise or export capability is available without operational evidence.
+## Architecture and governance guardrails
+- Keep React + TypeScript + Vite and Express + Prisma + PostgreSQL unless measured constraints justify a change.
+- Extend the current modular monolith; do not introduce microservices prematurely.
+- Preserve existing B2B RFQ and quotation flows.
+- Treat manufacturer verification as a workflow with evidence and timestamps, not a marketing badge alone.
+- Do not describe manufacturers as verified, certified or export-ready without documented evidence and review.
+- Multi-currency quoting is not equivalent to enabled international payment acceptance.
+- Confirm seller-of-record, GST, e-commerce operator/TCS, export, customs and cross-border tax treatment with qualified advisers before enabling transactions.
+- Do not expose manufacturer-sensitive documents or buyer commercial information to unauthorized users.
