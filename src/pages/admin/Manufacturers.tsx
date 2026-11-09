@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import DashboardShell from "../../components/layout/DashboardShell";
 import { adminNav } from "../../components/layout/navConfig";
-import { Badge } from "../../components/ui/Primitives";
+import { Badge, Card } from "../../components/ui/Primitives";
 import AdminTable, { Column } from "../../components/shared/AdminTable";
 import { api, apiErrorMessage } from "../../api/client";
 
 export default function Manufacturers() {
   const [manufacturers, setManufacturers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
 
   function load() {
     setLoading(true);
@@ -28,6 +30,13 @@ export default function Manufacturers() {
   }
 
   const tone: Record<string, "success" | "warning" | "danger"> = { VERIFIED: "success", PENDING: "warning", REJECTED: "danger" };
+  const filtered = manufacturers.filter((m) => {
+    const term = query.trim().toLowerCase();
+    const matches = !term || [m.companyName, m.user?.email, m.user?.name, m.city, m.state, m.country]
+      .some((value) => String(value || "").toLowerCase().includes(term));
+    return matches && (statusFilter === "ALL" || m.verificationStatus === statusFilter);
+  });
+  const pendingCount = manufacturers.filter((m) => m.verificationStatus === "PENDING").length;
 
   const cols: Column<any>[] = [
     { header: "Company", render: (m) => <div><p className="font-medium text-forest-700">{m.companyName}</p><p className="text-xs text-forest-400">{m.user?.email}</p></div> },
@@ -52,7 +61,18 @@ export default function Manufacturers() {
 
   return (
     <DashboardShell navItems={adminNav} sectionLabel="Admin Dashboard" greeting="Manufacturers" subtitle="Verify manufacturers and monitor their catalog.">
-      <AdminTable columns={cols} rows={manufacturers} loading={loading} emptyTitle="No manufacturers yet" />
+      <div className="mb-5 grid gap-3 sm:grid-cols-3">
+        <Card className="p-4"><p className="text-xs text-forest-400">Total manufacturers</p><p className="mt-1 text-2xl font-semibold text-forest-700">{manufacturers.length}</p></Card>
+        <Card className="p-4"><p className="text-xs text-forest-400">Awaiting review</p><p className="mt-1 text-2xl font-semibold text-forest-700">{pendingCount}</p></Card>
+        <Card className="p-4"><p className="text-xs text-forest-400">Verified</p><p className="mt-1 text-2xl font-semibold text-forest-700">{manufacturers.filter((m) => m.verificationStatus === "VERIFIED").length}</p></Card>
+      </div>
+      <Card className="mb-4 flex flex-col gap-3 p-4 sm:flex-row">
+        <input className="input flex-1" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search company, contact, email or location" aria-label="Search manufacturers" />
+        <select className="input sm:max-w-xs" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} aria-label="Filter by verification status">
+          <option value="ALL">All statuses</option><option value="PENDING">Pending review</option><option value="VERIFIED">Verified</option><option value="REJECTED">Rejected</option>
+        </select>
+      </Card>
+      <AdminTable columns={cols} rows={filtered} loading={loading} emptyTitle="No matching manufacturers" />
     </DashboardShell>
   );
 }
