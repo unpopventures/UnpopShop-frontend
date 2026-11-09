@@ -6,6 +6,7 @@ import Home from "./pages/public/Home";
 import Login from "./pages/public/Login";
 import RegisterBuyer from "./pages/public/RegisterBuyer";
 import RegisterManufacturer from "./pages/public/RegisterManufacturer";
+import ManufacturersLanding from "./pages/public/ManufacturersLanding";
 import ProductsBrowse from "./pages/public/ProductsBrowse";
 import ProductDetail from "./pages/public/ProductDetail";
 import BrandsBrowse from "./pages/public/BrandsBrowse";
@@ -53,19 +54,12 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register/buyer" element={<RegisterBuyer />} />
       <Route path="/register/manufacturer" element={<RegisterManufacturer />} />
+      <Route path="/manufacturers" element={<ManufacturersLanding />} />
       <Route path="/products" element={<ProductsBrowse />} />
       <Route path="/products/:id" element={<ProductDetail />} />
       <Route path="/brands" element={<BrandsBrowse />} />
       <Route path="/brands/:id" element={<BrandDetail />} />
-      {/* Public bulk-quote entry point requires a buyer account to submit */}
-      <Route
-        path="/bulk-quote"
-        element={
-          <ProtectedRoute roles={["BUYER"]}>
-            <BulkQuote />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/bulk-quote" element={<ProtectedRoute roles={["BUYER"]}><BulkQuote /></ProtectedRoute>} />
 
       {/* Buyer */}
       <Route path="/buyer" element={<ProtectedRoute roles={["BUYER"]}><BuyerOverview /></ProtectedRoute>} />
